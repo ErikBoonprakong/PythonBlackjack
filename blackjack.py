@@ -10,6 +10,8 @@ dealerTotal = 0
 playerTotal = 0
 dealerHasBlackjack = False
 playerHasBlackjack = False
+dealerAces = 0
+playerAces = 0
 
 def play():
     draw('player')
@@ -87,18 +89,32 @@ def draw(hand):
 def updateTotal(hand, card):
     global playerTotal
     global dealerTotal
+    global playerAces
+    global dealerAces
     cardValue = card[:-1]
     match cardValue:
         case 'A':
             cardValue = 11
+            if (hand == 'player'):
+                playerAces += 1
+            elif (hand == 'dealer'):
+                dealerAces += 1
         case 'J' | 'Q' | 'K':
             cardValue = 10
         case _:
             cardValue = int(cardValue)
     if (hand == 'player'):
         playerTotal += cardValue
+        # Ace can be worth 1 or 11
+        while (playerTotal > 21 and playerAces > 0):
+            playerTotal -= 10
+            playerAces -= 1
     elif (hand == 'dealer'):
         dealerTotal += cardValue
+        # Ace can be worth 1 or 11
+        while (dealerTotal > 21 and dealerAces > 0):
+            dealerTotal -= 10
+            dealerAces -= 1
 
 def hitDealer():
     draw('dealer')
@@ -118,6 +134,8 @@ def endGame(loser):
     global playerHasBlackjack
     global dealerTotal
     global playerTotal
+    global dealerAces
+    global playerAces
     winMsg = "You win! Yay!"
     loseMsg = "You lose! You absolutely suck!"
     drawMsg = "It's a draw!"
@@ -154,6 +172,9 @@ def endGame(loser):
         playerTotal = 0
         dealerHasBlackjack = False
         playerHasBlackjack = False
+        dealerAces = 0
+        playerAces = 0
+        # Clear console
         print("\033[H\033[J", end="")
         play()
 
