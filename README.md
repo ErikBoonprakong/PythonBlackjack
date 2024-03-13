@@ -12,7 +12,7 @@ Python blackjack console game.
 - Once someone has chosen to 'stick' they can no longer draw cards.
 - The game ends once both people have chosen to stick.
 - At the end of the game whoever is closest to 21 wins.
-- 'Blackjack' is achieved when someone sticks with just 2 card and those 2 cards contain an ace and a picture card (J, Q, K).
+- 'Blackjack' is achieved when someone sticks with just 2 cards and those 2 cards contain an ace and a picture card (J, Q, K).
 - Blackjack is the most valuable score someone can receive and is worth more than any other combination totalling 21.
 - If both the player and the dealer score a blackjack then the game is a draw.
 - If the player and the dealer have equal scores then the person with the most cards in their hand wins.
