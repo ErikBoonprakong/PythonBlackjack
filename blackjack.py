@@ -24,10 +24,12 @@ def play():
     print(f"Dealer's total: {dealerTotal}")
     hitOrStickAction = input('Would you like to hit or stick? (h/s) \n')
     endTheGame = hitOrStick(hitOrStickAction)
+    # Keep playing until someone goes bust or both people stick
     while (endTheGame == False):
         hitOrStickAction = input('Would you like to hit or stick? (h/s) \n')
         endTheGame = hitOrStick(hitOrStickAction)
 
+# Check if a hand contains a blackjack
 def hasBlackjack(hand, who):
     global dealerHasBlackjack
     global playerHasBlackjack
@@ -48,8 +50,10 @@ def hitOrStick(action):
     if (action.lower() == 's' or action.lower() == 'stick'):
         if (playerTotal < 17):
             print("You can't stick on less than 17!")
+            # Continue playing
             return False
         else:
+            # If someone chooses to stick with just 2 cards then check if they have blackjack
             if (len(playerHand) == 2):
                 hasBlackjack(playerHand, 'player')
             if (len(dealerHand) == 2):
@@ -58,6 +62,7 @@ def hitOrStick(action):
                 hitDealer()
             if (dealerTotal <= 21):
                 endGame('tbd')
+        # End the game
         return True
     elif (action.lower() == 'h' or action.lower() == 'hit'):
         draw('player')
@@ -66,17 +71,22 @@ def hitOrStick(action):
         if (playerTotal > 21):
             print("You went bust!")
             endGame('player')
+            # End the game
             return True
         if (dealerTotal < 17):
+            # Ends the game if the dealer goes bust, otherwise continue playing
             return hitDealer()
         print(f"Dealer's hand: {', '.join(dealerHand)}")
         print(f"Dealer's total: {dealerTotal}")
+        # Continue playing
         return False
     else:
         print("Invalid input!")
+        # Continue playing
         return False
 
 def draw(hand):
+    # Select a random card from the deck
     card = deck[random.randrange(len(deck))]
     if (hand == 'player'):
         playerHand.append(card)
@@ -84,6 +94,7 @@ def draw(hand):
     elif (hand == 'dealer'):
         dealerHand.append(card)
         updateTotal('dealer', card)
+    # Remove drawn card from remaining deck
     deck.remove(card)
 
 def updateTotal(hand, card):
@@ -91,6 +102,7 @@ def updateTotal(hand, card):
     global dealerTotal
     global playerAces
     global dealerAces
+    # Remove suit from card string
     cardValue = card[:-1]
     match cardValue:
         case 'A':
@@ -137,7 +149,7 @@ def endGame(loser):
     global dealerAces
     global playerAces
     winMsg = "You win! Yay!"
-    loseMsg = "You lose! You absolutely suck!"
+    loseMsg = "You lose! Better luck next time!"
     drawMsg = "It's a draw!"
     if (loser == 'player'):
         print(loseMsg)
@@ -152,6 +164,7 @@ def endGame(loser):
             print(loseMsg)
         elif (playerHasBlackjack == True and dealerHasBlackjack == False):
             print(winMsg)
+        # If scores are equal and nobody has blackjack then check who is holding more cards
         elif (len(playerHand) > len(dealerHand)):
             print("You have more cards than the dealer!")
             print(winMsg)
@@ -162,6 +175,7 @@ def endGame(loser):
             print(drawMsg)
     playAgain = input("Would you like to play again? (y/n)")
     if (playAgain.lower() == 'y' or playAgain.lower() == 'yes'):
+        # Reset deck, hands and scores
         dealerHand = []
         playerHand = []
         deck = ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '10S', 'JS', 'QS', 'KS', 
