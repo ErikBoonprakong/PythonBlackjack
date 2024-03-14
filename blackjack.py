@@ -106,6 +106,7 @@ def updateTotal(hand, card):
     cardValue = card[:-1]
     match cardValue:
         case 'A':
+            # Aces is initially worth 11 points, this is changed to 1 later if required
             cardValue = 11
             if (hand == 'player'):
                 playerAces += 1
